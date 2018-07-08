@@ -1,0 +1,18 @@
+pipeline:
+  build:
+    image: spritsail/docker-build
+    volumes: [ '/var/run/docker.sock:/var/run/docker.sock' ]
+    repo: frebib/update-freedns
+
+  publish:
+    image: spritsail/docker-publish
+    volumes: [ '/var/run/docker.sock:/var/run/docker.sock' ]
+    secrets: [ docker_username, docker_password, microbadger_token ]
+    when: { branch: [ master ], event: [ push, tag, deployment ] }
+    repo: frebib/update-freedns
+
+  notify:
+    image: spritsail/notify
+    when: { status: [ success, failure] }
+    secrets: [ webhook_url, notify_token ]
+

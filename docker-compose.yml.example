@@ -1,0 +1,11 @@
+version: "2.3"
+
+services:
+  update-freedns:
+    image: frebib/update-freedns
+    environment:
+      TOKENS: |-
+        AB345CD=        # any comment you like
+        ANOTHERTOKEN=   # more comments
+    restart: unless-stopped
+

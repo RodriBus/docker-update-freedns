@@ -6,6 +6,8 @@ ENV CRON_HOUR=* \
 
 ENV FREEDNS_URL="https://freedns.afraid.org/dynamic/update.php?"
 
-CMD echo -e "${CRON_MIN} ${CRON_HOUR} * * * sleep ${CRON_SEC}; date; echo \"\${TOKENS}\" | while read key; do wget -O- \"\$FREEDNS_URL\${key%%#*}\"; done" \
+CMD echo -e "#!/bin/sh\necho \"\${TOKENS}\" | while read key; do wget -O- \"\$FREEDNS_URL\${key%%#*}\"; done" > /usr/local/bin/update-freedns.sh && \
+    chmod +x /usr/local/bin/update-freedns.sh && \
+    echo -e "${CRON_MIN} ${CRON_HOUR} * * * sleep ${CRON_SEC}; date; /usr/local/bin/update-freedns.sh" \
         | crontab -u cron - && \
     exec crond -d 6 -f

@@ -1,4 +1,4 @@
-FROM spritsail/alpine:3.8
+FROM alpine:3.9.2
 
 ENV CRON_HOUR=* \
     CRON_MIN=*/5 \
@@ -11,3 +11,4 @@ CMD echo -e "#!/bin/sh\necho \"\${TOKENS}\" | while read key; do wget -O- \"\$FR
     echo -e "${CRON_MIN} ${CRON_HOUR} * * * sleep ${CRON_SEC}; date; /usr/local/bin/update-freedns.sh" \
         | crontab -u cron - && \
     exec crond -d 6 -f
+    
